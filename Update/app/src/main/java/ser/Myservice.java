@@ -17,7 +17,7 @@ import java.nio.charset.Charset;
 public class Myservice extends Service {
 
 
-    String IP="192.168.1.163";
+    String IP="192.168.137.105";
     int Port=1200;
     private Socket socket;
     private OutputStream outputStream = null;
@@ -89,6 +89,7 @@ public class Myservice extends Service {
                         e1.printStackTrace();
                     }
                     if (len > 0) {
+                        showToast("V,"+RxBuf[21]+",V1,"+RxBuf[22]);
 
                        // System.out.println(RxBuf[11]);
                         if (RxBuf[11] == 1) {//

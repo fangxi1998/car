@@ -76,9 +76,14 @@ public class Mainactivity extends AppCompatActivity {
     private Button down;
     private ImageView rq;
     private ImageView sd;
+    private TextView V;
+    private Button power;
     MySynthesizerListener mTtsListener;
     private ReentrantLock mReentrantLock = new ReentrantLock();
-    static  int count=0;
+    static  int count=0,count1=0;
+    static  int count2=0,count3=0;
+    private  Button b1,b2;
+
 
 
 
@@ -95,6 +100,7 @@ public class Mainactivity extends AppCompatActivity {
         surface.setKeepScreenOn(true);  //视频
         holder = surface.getHolder();
         setListener();
+
         Intent in = new Intent(Mainactivity.this,Myservice.class);
         startService(in);
         this.registerReceiver(receiver, filter); //开启广播
@@ -129,11 +135,10 @@ public class Mainactivity extends AppCompatActivity {
         //仅支持保存为 pcm 和 wav 格式， 如果不需要保存合成音频，注释该行代码
         // mTts.setParameter(SpeechConstant. TTS_AUDIO_PATH, "./sdcard/iflytek.pcm" );
         //3.开始合成
-
-
     }
 
     class MySynthesizerListener implements SynthesizerListener {
+
 
         @Override
         public void onSpeakBegin() {
@@ -175,16 +180,11 @@ public class Mainactivity extends AppCompatActivity {
 
         }
     }
-
-
     private void showTip (String data) {
         Toast.makeText( this, data, Toast.LENGTH_SHORT).show() ;
     }
 
     private void setListener() {
-
-
-
         btn_up.setOnTouchListener(onTouchListener);
         btn_down.setOnTouchListener(onTouchListener);
         btn_left.setOnTouchListener(onTouchListener);
@@ -194,13 +194,9 @@ public class Mainactivity extends AppCompatActivity {
         btn_startxj.setOnTouchListener(onTouchListener);
         up.setOnClickListener(ButtonOnClickListener);
         down.setOnClickListener(ButtonOnClickListener);
-
-
-
-    }
-
-
-    //启动视频绘制
+        power.setOnClickListener(ButtonOnClickListener);
+        }
+        //启动视频绘制
     @Override
     protected void onResume() {
         // TODO Auto-generated method stub
@@ -208,9 +204,6 @@ public class Mainactivity extends AppCompatActivity {
         new gotoLoginAct().start();
         super.onResume();
     }
-
-
-
     public class MyReceiver extends BroadcastReceiver {
         // 接收SocketService发送过来的广播，更新主界面UI
         @Override
@@ -239,28 +232,29 @@ public class Mainactivity extends AppCompatActivity {
             }else if ("i".equals(dataReceiver)) {
                 home_huoyan.setBackgroundResource(R.drawable.huoyan_yes);
                 //mTts.startSpeaking("家中有火焰，请及时处理~",mTtsListener);
-                VibratorUtil.Vibrate(Mainactivity.this, 500);
-                if ("a".equals(dingwei)) {
+                //VibratorUtil.Vibrate(Mainactivity.this, 500);
+                if ("a".equals(dingwei)||"b".equals(dingwei)) {
                     //Toast.makeText(Mainactivity.this, "40", Toast.LENGTH_SHORT).show();
-
-                    mTts.startSpeaking("客厅有火焰，请及时处理~",mTtsListener);
-                }else if ("b".equals(dingwei)) {
-                   // Toast.makeText(Mainactivity.this, "188", Toast.LENGTH_SHORT).show();
-                    mTts.startSpeaking("客厅有火焰，请及时处理~",mTtsListener);
-                }else if ("c".equals(dingwei)) {
-                   // Toast.makeText(Mainactivity.this, "126", Toast.LENGTH_SHORT).show();
-                    mTts.startSpeaking("厨房有火焰，请及时处理~",mTtsListener);
-                }else if ("d".equals(dingwei)) {
-                   // Toast.makeText(Mainactivity.this, "129", Toast.LENGTH_SHORT).show();
-                    mTts.startSpeaking("厨房有火焰，请及时处理~",mTtsListener);
-                }else if ("e".equals(dingwei)) {
-                    //Toast.makeText(Mainactivity.this, "143", Toast.LENGTH_SHORT).show();
-                    mTts.startSpeaking("卧室有火焰，请及时处理~",mTtsListener);
-                }else if ("f".equals(dingwei)) {
-
-
-                    //Toast.makeText(Mainactivity.this, "220", Toast.LENGTH_SHORT).show();
-                   mTts.startSpeaking("卧室有火焰，请及时处理~",mTtsListener);
+                    count1++;
+                    if(count1==1){
+                    mTts.startSpeaking("客厅有火焰，请及时处理~",mTtsListener);}
+                    if(count1==40){
+                        count1=0;
+                    }
+                }else if ("c".equals(dingwei)||"d".equals(dingwei)) {
+                    count2++;
+                    if(count2==1){
+                        mTts.startSpeaking("厨房有火焰，请及时处理~",mTtsListener);}
+                    if(count2==40){
+                        count2=0;
+                    }
+                }else if ("e".equals(dingwei)||"f".equals(dingwei)) {
+                    count3++;
+                    if(count3==1){
+                        mTts.startSpeaking("卧室有火焰，请及时处理~",mTtsListener);}
+                    if(count3==40){
+                        count3=0;
+                    }
                 }
             }else if ("j".equals(dataReceiver)) {
                 home_hongwai.setBackgroundResource(R.drawable.one_hongwai_yes);
@@ -270,48 +264,39 @@ public class Mainactivity extends AppCompatActivity {
                 String onedata[] = dataReceiver.split(",");
                 home_tx_shidu.setText(onedata[1]+"%");
                 home_tx_wendu.setText(onedata[3]+"℃");
-            }
+            }else if(dataReceiver.contains("V,")){
+                String Vdata[]= dataReceiver.split(",");
+                V.setText("电压值"+Vdata[1]+"."+Vdata[3]+"V");
+                }
             else if ("l".equals(dataReceiver)) {
                 count++;
                 rq.setBackgroundResource(R.drawable.ryhq);
-                VibratorUtil.Vibrate(Mainactivity.this, 500);
+                //VibratorUtil.Vibrate(Mainactivity.this, 500);
                 if(count==1) {
                     mTts.startSpeaking("家中燃气浓度过高,有泄露风险，请及时处理~", mTtsListener);
-
-                }
+                    }
                 if(count==60){
-
-                    count=0;
-                }
-
-
-            }else if ("m".equals(dataReceiver)) {
+                    count=0; }
+                }else if ("m".equals(dataReceiver)) {
                 rq.setBackgroundResource(R.drawable.byhq);
                 count=0;
-
-            }else if ("n".equals(dataReceiver)) {
+                }else if ("n".equals(dataReceiver)) {
                 sd.setBackgroundResource(R.drawable.ryd);
                 VibratorUtil.Vibrate(Mainactivity.this, 500);
                 mTts.startSpeaking("家中有流水,请及时处理~",mTtsListener);
-
-            }else if ("o".equals(dataReceiver)) {
+                }else if ("o".equals(dataReceiver)) {
                 sd.setBackgroundResource(R.drawable.byd);
-
+                }
             }
-
-
-        }
     }
 //视频绘制实现
     private void draw() {
         // TODO Auto-generated method stub
-
-
         try {
             InputStream inputstream = null;
             //创建一个URL对象
 
-            url = "http://192.168.1.150:8080/?action=snapshot";
+            url = "http://192.168.137.105:8080/?action=snapshot";
             videoUrl=new URL(url);
             //利用HttpURLConnection对象从网络中获取网页数据
             conn = (HttpURLConnection)videoUrl.openConnection();
@@ -336,29 +321,28 @@ public class Mainactivity extends AppCompatActivity {
     }
 //声明控件
     private void findView() {
-        surface = (SurfaceView)findViewById(R.id.surface);
-        home_dingwei = (TextView)findViewById(R.id.home_dingwei);
-        home_tx_wendu = (TextView)findViewById(R.id.home_tx_wendu);
-        home_tx_shidu = (TextView)findViewById(R.id.home_tx_shidu);
-        btn_up = (ImageButton)findViewById(R.id.btn_up);
-        btn_left = (ImageButton)findViewById(R.id.btn_left);
-        btn_xunhang = (ImageButton)findViewById(R.id.btn_xunhang);
-        btn_right = (ImageButton)findViewById(R.id.btn_right);
-        btn_down = (ImageButton)findViewById(R.id.btn_down);
-        btn_startxj = (ImageButton)findViewById(R.id.xj1);
-        btn_stopxj=(ImageButton)findViewById(R.id.xj2);
-        home_hongwai = (ImageView)findViewById(R.id.home_hongwai);
-        home_huoyan = (ImageView)findViewById(R.id.home_huoyan);
+        surface = findViewById(R.id.surface);
+        home_dingwei = findViewById(R.id.home_dingwei);
+        home_tx_wendu =findViewById(R.id.home_tx_wendu);
+        home_tx_shidu = findViewById(R.id.home_tx_shidu);
+        btn_up = findViewById(R.id.btn_up);
+        btn_left = findViewById(R.id.btn_left);
+        btn_xunhang = findViewById(R.id.btn_xunhang);
+        btn_right = findViewById(R.id.btn_right);
+        btn_down = findViewById(R.id.btn_down);
+        btn_startxj = findViewById(R.id.xj1);
+        btn_stopxj=findViewById(R.id.xj2);
+        home_hongwai = findViewById(R.id.home_hongwai);
+        home_huoyan = findViewById(R.id.home_huoyan);
         up=findViewById(R.id.button1);
         down = findViewById(R.id.button2);
         sd=findViewById(R.id.yd);
         rq=findViewById(R.id.rq);
+        V= findViewById(R.id.V);
+        power = findViewById(R.id.power);
 
-
-    }
-
-
-//副线程发送数据
+        }
+    //副线程发送数据
     class CarSendThread extends Thread{
         @SuppressLint("HandlerLeak")
         public void run(){
@@ -374,15 +358,8 @@ public class Mainactivity extends AppCompatActivity {
                 }
             };
             Looper.loop();
-
-
-
+            }
         }
-
-
-
-
-    }
     //副线程启动视频绘制
     class gotoLoginAct extends Thread{
         @Override
@@ -435,12 +412,13 @@ public class Mainactivity extends AppCompatActivity {
                     msg1.obj="cd";
                     handler.sendMessage(msg1);
                         break;
-
-
-
+                case R.id.power:
+                    Message msg2 = handler.obtainMessage();
+                    msg2.obj="cp";
+                    handler.sendMessage(msg2);
+                    break;
+                        }
             }
-
-        }
     };
 
 //ontouchlistener 的监听
@@ -470,8 +448,7 @@ public class Mainactivity extends AppCompatActivity {
                            msg.obj="cb";
                            handler.sendMessage(msg);
                         }
-
-                    }
+                        }
                     break;
                 case R.id.btn_up:
                     if (DataUtil.go==false) {
@@ -491,8 +468,7 @@ public class Mainactivity extends AppCompatActivity {
                             msg.obj="ca";
                             handler.sendMessage(msg);
                         }
-
-                    }
+                        }
                     break;
                 case R.id.btn_left:
                     if (DataUtil.go==false) {
@@ -503,8 +479,7 @@ public class Mainactivity extends AppCompatActivity {
                             Message msg = handler.obtainMessage();
                             msg.obj="cs";
                             handler.sendMessage(msg);
-
-                        }
+                            }
                         if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
 
                             btn_left.setBackgroundResource(R.drawable.leftyes);
@@ -513,8 +488,7 @@ public class Mainactivity extends AppCompatActivity {
                             msg.obj="cl";
                             handler.sendMessage(msg);
                         }
-
-                    }
+                        }
                     break;
                 case R.id.btn_right:
                     if (DataUtil.go==false) {
@@ -546,12 +520,7 @@ public class Mainactivity extends AppCompatActivity {
                             msg.obj="xs";
                             handler.sendMessage(msg);
                         }
-
-
-
-
-
-                    }
+                        }
                     break;
                 case R.id.xj2:
                     if(DataUtil.go==false){
@@ -562,25 +531,10 @@ public class Mainactivity extends AppCompatActivity {
                             msg.obj="xt";
                             handler.sendMessage(msg);
                         }
-
-
-
-
-
                     }
                     break;
 
-
-
-
-
-
-
-
-            }
-            return false;
-        }
+                    }
+            return false; }
     };
-
-
 }

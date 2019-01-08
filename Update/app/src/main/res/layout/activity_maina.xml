@@ -193,6 +193,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/lin_down1"
         android:layout_marginTop="3dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/V"
+            android:layout_toLeftOf="@id/btn_left"
+            android:text="电压值"
+            android:textColor="#000"
+            />
 
         <ImageButton
             android:id="@+id/btn_left"
@@ -223,7 +231,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/lin_down2">
        />
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="充电"
+            android:id="@+id/power"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/bt"/>
         <ImageButton
             android:id="@+id/btn_down"
             android:layout_width="60dp"
@@ -235,6 +249,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/button1"
             android:text="up"
+            android:background="@drawable/bt"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/btn_down"
             android:layout_marginLeft="30dp"
@@ -263,6 +278,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/button2"
             android:text="down"
+            android:background="@drawable/bt"
            android:layout_alignParentRight="true"
             android:layout_marginRight="48dp"
             android:layout_marginTop="5dp"/>
@@ -275,4 +291,5 @@
 
 
     </RelativeLayout>
+
 </RelativeLayout>

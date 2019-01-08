@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
+    
     private TextView textView;
     private Button login;
     private EditText username,password;

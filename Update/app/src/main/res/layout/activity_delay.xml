@@ -14,14 +14,15 @@
         android:layout_centerVertical="true"
  android:layout_marginLeft="70dp"
         android:src="@drawable/car" />
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="巡检助理"
-    android:layout_marginLeft="20dp"
-    android:textColor="#93E0FF"
-    android:textSize="30dp"
 
-    android:layout_toRightOf="@+id/iv"
-    android:layout_centerVertical="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="1dp"
+        android:layout_toRightOf="@+id/iv"
+
+        android:text="巡检助理"
+        android:textColor="#93E0FF"
+        android:textSize="30dp" />
 </RelativeLayout>
